@@ -54,7 +54,11 @@ module Administrate
       end
 
       def url(attachment)
-        Rails.application.routes.url_helpers.rails_blob_path(attachment, only_path: true)
+        if attachment.video?
+          attachment.url
+        else
+          Rails.application.routes.url_helpers.rails_blob_path(attachment, only_path: true)
+        end
       end
 
       def blob_url(attachment)
@@ -70,7 +74,9 @@ module Administrate
       end
 
       def attachments
-        many? ? data.attachments : [data.attachment] if attached?
+        if attached?
+          many? ? data.attachments : [data.attachment]
+        end
       end
     end
   end
